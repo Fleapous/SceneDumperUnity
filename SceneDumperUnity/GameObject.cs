@@ -265,7 +265,7 @@ public class SceneDumperTools
             {
                 gameObjects.Add(new List<string>(yamlPart));
                 yamlPart.Clear();
-            }else if (objectFound && line.Contains("--- "))
+            }else if (objectFound && LineStartWithDashes(line))
             {
                 objectFound = false; // Reset the flag
                 insideTheObject = false;
@@ -279,6 +279,13 @@ public class SceneDumperTools
             }
         }
         return gameObjects;
+    }
+    //Helper method for Detecting "---" lines
+    private static bool LineStartWithDashes(string line)
+    {
+        string regexPattern = @"^---";
+        Regex regex = new Regex(regexPattern);
+        return regex.IsMatch(line);
     }
     private void PrintHierarchy(StreamWriter writer, List<GameObject> gameObjects, List<Transform> transforms, Transform currentTransform, string indent = "")
     {
